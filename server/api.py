@@ -128,7 +128,14 @@ async def delete(request: Request, id: int, db: Session = Depends(get_db)):
 @app.get("/download/{id}")
 async def download(request: Request, id: int, db: Session = Depends(get_db)):
     invoice = db.query(Invoices).filter(Invoices.id == id).first()
-    buffer = generate_pdf(invoice)
+    seller = db.query(Sellers).filter(Sellers.id == invoice.seller_id).first()
+    buyer = db.query(Buyers).filter(Buyers.id == invoice.buyer_id).first()
+    product = db.query(Products).filter(Products.id == invoice.product_id).first()
+    payment_method = (
+        db.query(PaymentMethods).filter(PaymentMethods.id == invoice.payment_method_id).first()
+    )
+
+    buffer = generate_pdf(invoice, seller, buyer, product, payment_method)
     pdf_bytes = buffer.getvalue()
     buffer.close()
 

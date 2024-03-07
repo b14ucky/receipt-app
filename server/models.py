@@ -23,7 +23,6 @@ class Products(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String(100), index=True)
-    price_per_unit = Column(Float(2), index=True)
 
 
 class PaymentMethods(Base):
@@ -38,12 +37,25 @@ class Invoices(Base):
 
     id = Column(Integer, primary_key=True)
     number = Column(String(100), index=True)
+    order_id = Column(Integer, index=True)
     buyer_id = Column(Integer, index=True)
     seller_id = Column(Integer, index=True)
     product_id = Column(Integer, index=True)
     payment_method_id = Column(Integer, index=True)
     quantity = Column(Integer, index=True)
+    price_per_unit = Column(Float(2), index=True)
     total_amount = Column(Float(2), index=True)
     date_of_issue = Column(Date, index=True)
     date_of_purchase = Column(Date, index=True)
     place_of_issue = Column(String(100), index=True)
+
+
+class Orders(Base):
+    __tablename__ = "orders"
+
+    id = Column(Integer, primary_key=True)
+    number = Column(String(10), index=True)
+    buyer_id = Column(Integer, index=True)
+    product_id = Column(Integer, index=True)
+    quantity = Column(Integer, index=True)
+    done = Column(Boolean, default=False)

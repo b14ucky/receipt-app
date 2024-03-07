@@ -5,7 +5,7 @@ from reportlab.pdfbase.pdfmetrics import stringWidth
 import io
 
 
-def generate_pdf(invoice, seller, buyer, product, payment_method):
+def generate_pdf(invoice, order, seller, buyer, product, payment_method):
     pagesize = (595, 842)
     left_margin = 50
     top_margin = 50
@@ -24,6 +24,7 @@ def generate_pdf(invoice, seller, buyer, product, payment_method):
     c.drawString(left_margin, pagesize[1] - top_margin, "Miejsce wystawienia:")
     c.drawString(left_margin, pagesize[1] - top_margin - 20, "Data wystawienia:")
     c.drawString(left_margin, pagesize[1] - top_margin - 40, "Data sprzedaży:")
+    c.drawString(left_margin, pagesize[1] - top_margin - 60, "Numer zamówienia:")
 
     c.setFont(bold_font, 10)
 
@@ -41,6 +42,11 @@ def generate_pdf(invoice, seller, buyer, product, payment_method):
         left_margin + stringWidth("Data sprzedaży:", font, 10) + 10,
         pagesize[1] - top_margin - 40,
         invoice.date_of_purchase.strftime("%Y-%m-%d"),
+    )
+    c.drawString(
+        left_margin + stringWidth("Numer zamówienia:", font, 10) + 10,
+        pagesize[1] - top_margin - 60,
+        order.number,
     )
 
     c.setFont(font, 10)
@@ -81,7 +87,7 @@ def generate_pdf(invoice, seller, buyer, product, payment_method):
     y_pos = pagesize[1] - top_margin - 220 - row_height
     c.line(left_margin, y_pos + 5, pagesize[0] - left_margin, y_pos + 5)
 
-    total_amount = f"{int(invoice.quantity) * int(product.price_per_unit):.2f}"
+    total_amount = f"{int(invoice.quantity) * int(invoice.price_per_unit):.2f}"
 
     left_margin += 5
 
@@ -89,7 +95,7 @@ def generate_pdf(invoice, seller, buyer, product, payment_method):
     c.drawString(left_margin, y_pos, "1.")
     c.drawString(left_margin + 30, y_pos, product.name)
     c.drawString(left_margin + 280, y_pos, str(invoice.quantity))
-    c.drawString(left_margin + 340, y_pos, f"{product.price_per_unit:.2f}")
+    c.drawString(left_margin + 340, y_pos, f"{invoice.price_per_unit:.2f}")
 
     c.setFont(bold_font, 10)
 

@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Orders</title>
+		<title>Zamówienia</title>
 		<link
 			rel="stylesheet"
 			href="{{ url_for('static', path='/style.css')}}"
@@ -14,8 +14,98 @@
 			<header>
 				<a href="/">Strona główna</a>
 			</header>
-			<section>
-				<h1>Tu będą zamówienia</h1>
+			<section class="form">
+				<form action="/orders/add" method="post">
+					<div class="container">
+						<div class="buyer-data">
+							<h4>Dane kupującego</h4>
+							<input
+								type="text"
+								name="buyer_name"
+								id="buyer_name"
+								placeholder="Imie"
+								required
+							/>
+							<input
+								type="text"
+								name="buyer_last_name"
+								id="buyer_last_name"
+								placeholder="Nazwisko"
+								required
+							/>
+						</div>
+						<div class="product-data">
+							<h4>Dane produktu</h4>
+							<input
+								type="text"
+								name="product_name"
+								id="product_name"
+								placeholder="Nazwa produktu"
+								maxlength="43"
+								required
+							/>
+							<input
+								type="number"
+								name="product_quantity"
+								id="product_quantity"
+								placeholder="Ilość produktu"
+								required
+							/>
+						</div>
+					</div>
+					<div class="button-container">
+						<input type="submit" value="Dodaj" />
+					</div>
+				</form>
+			</section>
+			<section class="invoice-list">
+				<div class="container">
+					<h2>Lista zamówień</h2>
+					<table>
+						<thead>
+							<tr>
+								<th>Lp.</th>
+								<th>Numer zamówienia</th>
+								<th>Nazwa produktu</th>
+								<th>Ilość</th>
+								<th>Zrobione</th>
+								<th>Usuń</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for order in orders %}
+							<tr>
+								<td>{{ order.id }}.</td>
+								<td>{{ order.number }}</td>
+								{% for product in products %} {% if product.id
+								== order.product_id %}
+								<td>{{ product.name }}</td>
+								{% endif %} {% endfor %}
+								<td>{{ order.quantity }}</td>
+								<td>
+									{% if order.done %}
+									<input
+										type="checkbox"
+										onchange="window.location.href='/orders/update/{{ order.id }}'"
+										checked
+									/>
+									{% else %}
+									<input
+										type="checkbox"
+										onchange="window.location.href='/orders/update/{{ order.id }}'"
+									/>
+									{% endif %}
+								</td>
+								<td>
+									<a href="/orders/delete/{{ order.id }}">
+										Usuń
+									</a>
+								</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
 			</section>
 		</main>
 	</body>

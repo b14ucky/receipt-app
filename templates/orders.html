@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Invoices App</title>
+		<title>Orders</title>
 		<link
 			rel="stylesheet"
 			href="{{ url_for('static', path='/style.css')}}"
@@ -12,11 +12,10 @@
 	<body>
 		<main>
 			<header>
-				<h1>Wybierz co chcesz zrobić:</h1>
+				<a href="/">Strona główna</a>
 			</header>
-			<section class="button-container">
-				<a href="/invoices" class="button">Zarządzaj fakturami</a>
-				<a href="/orders" class="button">Zarządzaj zamówieniami</a>
+			<section>
+				<h1>Tu będą zamówienia</h1>
 			</section>
 		</main>
 	</body>

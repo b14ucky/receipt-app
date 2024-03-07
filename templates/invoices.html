@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pl_PL">
+	<head>
+		<meta charset="UTF_8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Rachunki</title>
+		<link
+			rel="stylesheet"
+			href="{{ url_for('static', path='/style.css')}}"
+		/>
+	</head>
+	<body>
+		<main>
+			<header>
+				<a href="/">Strona główna</a>
+			</header>
+			<section class="form">
+				<form action="/add" method="post">
+					<div class="container">
+						<div class="buyer-data">
+							<h4>Dane kupującego</h4>
+							<input
+								type="text"
+								name="buyer_name"
+								id="buyer_name"
+								placeholder="Imie"
+							/>
+							<input
+								type="text"
+								name="buyer_last_name"
+								id="buyer_last_name"
+								placeholder="Nazwisko"
+							/>
+						</div>
+						<div class="product-data">
+							<h4>Dane produktu</h4>
+							<input
+								type="text"
+								name="product_name"
+								id="product_name"
+								placeholder="Nazwa produktu"
+								maxlength="43"
+							/>
+							<input
+								type="number"
+								name="product_price"
+								id="product_price"
+								placeholder="Cena produktu"
+								step="0.01"
+							/>
+							<input
+								type="number"
+								name="product_quantity"
+								id="product_quantity"
+								placeholder="Ilość produktu"
+							/>
+						</div>
+						<div class="invoice-data">
+							<h4>Dane faktury</h4>
+							<input
+								type="text"
+								name="place_of_issue"
+								id="place_of_issue"
+								placeholder="Miejsce wystawienia"
+							/>
+							<label for="sale_date">Data sprzedaży: </label>
+							<input
+								type="date"
+								name="sale_date"
+								id="sale_date"
+							/>
+							<label for="payment_method"
+								>Sposób płatności:</label
+							>
+							<select name="payment_method" id="payment_method">
+								<option value="transfer">Przelew</option>
+								<option value="blik">BLIK</option>
+							</select>
+						</div>
+					</div>
+					<div class="button-container">
+						<input type="submit" value="Dodaj" />
+					</div>
+				</form>
+			</section>
+			<section class="invoice-list">
+				<div class="container">
+					<h2>Lista faktur</h2>
+					<table>
+						<thead>
+							<tr>
+								<th>Lp.</th>
+								<th>Numer faktury</th>
+								<th>Data wystawienia</th>
+								<th>Pobierz</th>
+								<th>Pokaż</th>
+								<th>Usuń</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for invoice in invoices %}
+							<tr>
+								<td>{{ loop.index }}.</td>
+								<td>{{ invoice.number }}</td>
+								<td>{{ invoice.date_of_issue }}</td>
+								<td>
+									<a
+										href="/download/{{ invoice.id }}"
+										download
+										>Pobierz</a
+									>
+								</td>
+								<td>
+									<a href="/display/{{ invoice.id }}"
+										>Pokaż</a
+									>
+								</td>
+								<td>
+									<a href="/delete/{{ invoice.id }}">Usuń</a>
+								</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</section>
+		</main>
+	</body>
+</html>
